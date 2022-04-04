@@ -4,12 +4,36 @@ import Header from '../components/Header'
 import {colors} from '../config/constants'
 import {GiphyItemView} from '../components/GiphyItemView'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import {firebase} from '@react-native-firebase/database'
 
 const Home = (props) =>{
     const [search, setSearch] = useState("")
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [favData, setFavData] = useState([])
+    
+    const addToDatabase = (item) =>{
+        const reference = firebase.app().database("https://test-acc6f-default-rtdb.firebaseio.com/").ref('favData')
+        reference.once('value')
+        .then((snap)=>{
+            if(snap.numChildren()<5){
+                // add new
+                console.log("id ==> "+item.item.id)
+                let obj = {
+                    id : item.item.id,
+                    title :item.item.title,
+                    url : item.item.media[0].gif.url,
+                    desc : item.item.content_description
+                }
+                reference.push(obj).then(()=>{
+                    ToastAndroid.show("New item added as favorites",ToastAndroid.SHORT)    
+                })
+            }else{
+                ToastAndroid.show("Max limit reached",ToastAndroid.SHORT)
+            }
+        })
+
+    }
 
     const fetchData = async() =>{
         let api_key = "767ZOCXBMI1H"
@@ -26,15 +50,16 @@ const Home = (props) =>{
     }
 
     const addFav = (item) =>{
-        let data = [...favData]
-        if(data.length==5){
-            ToastAndroid.show("Max limit reached",ToastAndroid.SHORT)
-        }else{
-            data.push(item)
-            setFavData(data)
-            ToastAndroid.show("Added to fav",ToastAndroid.SHORT)
-            console.log("length ===> "+favData.length)
-        }
+        addToDatabase(item)
+        // let data = [...favData]
+        // if(data.length==5){
+        //     ToastAndroid.show("Max limit reached",ToastAndroid.SHORT)
+        // }else{
+        //     data.push(item)
+        //     setFavData(data)
+        //     ToastAndroid.show("Added to fav",ToastAndroid.SHORT)
+        //     console.log("length ===> "+favData.length)
+        // }
     }
 
     return(

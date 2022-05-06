@@ -21,9 +21,7 @@ target 'Test' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
 
-  pod 'RNFBDatabase', :path => '../node_modules/@react-native-firebase/database'
 
   target 'TestTests' do
     inherit! :complete

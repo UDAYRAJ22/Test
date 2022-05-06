@@ -18,5 +18,5 @@ export const colors = {
 }
 
 export const strings = {
-    Home : "Home",
+    Login : "Login",
 }

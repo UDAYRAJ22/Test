@@ -15,7 +15,9 @@ const Header = ({title, isBack, isFav, props}) =>{
             </View>
             <Text style={styles.headerTitle}>{title}</Text>
             <View>
-                
+                {isFav && (<AntDesign name="hearto" size={20} color={colors.white} onPress={()=>{
+                    props.navigation.navigate('Favorites')
+                }}/>)}
             </View>
         </View>
     )
